@@ -53,7 +53,7 @@ else
     echo "Content-Disposition: inline" >> $tmpfile.mailfile
     cat $tmpfile.html.tidied >> $tmpfile.mailfile
     for addr in $addrs; do
-        cat $tmpfile.mailfile | sendmail $addr
+        cat $tmpfile.mailfile | /usr/sbin/sendmail $addr
     done
     rm $tmpfile.mailfile
     rm $tmpfile.html
