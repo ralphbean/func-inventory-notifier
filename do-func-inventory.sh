@@ -2,7 +2,7 @@
 
 # List of addresses who should get mail
 addrs=ralph.bean@gmail.com
-now=`date +'%m-%d-%y %H:%m:%S'`
+now=`date +'%m-%d-%y %H:%M:%S'`
 
 # Just a util for getting a random tmpfile
 function gettmpfile()
@@ -22,28 +22,33 @@ tmpfile=$(gettmpfile)
 
 # Check and see if any git changes were made
 git --git-dir=/var/lib/func/inventory/.git log \
-        -p --since="70 minutes ago" --color > $tmpfile
+        -p --since="120 minutes ago" --color > $tmpfile
 
 # Were any made?
 nlines=`wc -l $tmpfile | awk ' { print $1 } '`
-
 if [ "$nlines" -eq "0" ] ; then
-    logger "[func-master-flex]  No changes detected.  Sleeping."
+    logger -s "[func-master-flex]  No changes detected.  Sleeping."
 else
-    logger "[func-master-flex] CHANGE DETECTED in func-inventory."
+    logger -s "[func-master-flex] CHANGE DETECTED in func-inventory."
 
     # HTML Colorize this biz
-    /root/configuration-projects/func-master-flex/ansi2html.sh \
+    /root/configuration-projects/func-master-flex/ansi2html.sh --bg=dark \
             < $tmpfile > $tmpfile.html
+    # Pretty it up.
+    /usr/bin/tidy -o $tmpfile.html.tidied -f /dev/null $tmpfile.html
 
     # Send an HTML mail
-    echo "Subject: func-inventory report ($now)" > $tmpfile.header
-    echo "From: 'func-master-flex' <root@craftsman>" >> $tmpfile.header
-    echo "MIME-Version: 1.0" >> $tmpfile.header
-    echo "Content-Type: text/html" >> $tmpfile.header
-    echo "Content-Disposition: inline" >> $tmpfile.header
+    echo "Subject: func-inventory report ($now)" > $tmpfile.mailfile
+    echo "From: 'func-master-flex' <root@craftsman>" >> $tmpfile.mailfile
+    echo "MIME-Version: 1.0" >> $tmpfile.mailfile
+    echo "Content-Type: text/html; charset=us-ascii" >> $tmpfile.mailfile
+    echo "Content-Disposition: inline" >> $tmpfile.mailfile
+    cat $tmpfile.html.tidied >> $tmpfile.mailfile
     for addr in $addrs; do
-        (cat $tmpfile.header
-         cat $tmpfile.html) | sendmail $addr
+        cat $tmpfile.mailfile | sendmail $addr
     done
+    rm $tmpfile.mailfile
+    rm $tmpfile.html
+    rm $tmpfile.html.tidied
 fi
+rm $tmpfile
