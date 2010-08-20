@@ -20,9 +20,17 @@ function gettmpfile()
 
 tmpfile=$(gettmpfile)
 
+# Do a func inventory except the modules 'mount' and 'iptables'
+#  They tend to be updated -all the time- and spam us.  :(
+func-inventory --modules=filetracker,hardware,service,system,rpms
+
+
 # Check and see if any git changes were made
 git --git-dir=/var/lib/func/inventory/.git log \
-        -p --since="120 minutes ago" --color > $tmpfile
+        -p \
+        --since="5 minutes ago" \
+        --color \
+        > $tmpfile
 
 # Were any made?
 nlines=`wc -l $tmpfile | awk ' { print $1 } '`
