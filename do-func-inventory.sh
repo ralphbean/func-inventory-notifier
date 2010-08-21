@@ -24,7 +24,6 @@ tmpfile=$(gettmpfile)
 #  They tend to be updated -all the time- and spam us.  :(
 func-inventory --modules=filetracker,hardware,service,system,rpms
 
-
 # Check and see if any git changes were made
 git --git-dir=/var/lib/func/inventory/.git log \
         -p \
