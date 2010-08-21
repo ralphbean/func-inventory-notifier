@@ -42,7 +42,9 @@ else
     /root/configuration-projects/func-master-flex/ansi2html.sh --bg=dark \
             < $tmpfile > $tmpfile.html
     # Pretty it up.
-    /usr/bin/tidy -o $tmpfile.html.tidied -f /dev/null $tmpfile.html
+    /usr/bin/tidy -o $tmpfile.html.tidy -f /dev/null $tmpfile.html
+    # Premail it up.
+    /usr/bin/python-premailer < $tmpfile.html.tidy > $tmpfile.html.tidy.premail
 
     # Send an HTML mail
     echo "Subject: func-inventory report ($now)" > $tmpfile.mailfile
@@ -50,12 +52,15 @@ else
     echo "MIME-Version: 1.0" >> $tmpfile.mailfile
     echo "Content-Type: text/html; charset=us-ascii" >> $tmpfile.mailfile
     echo "Content-Disposition: inline" >> $tmpfile.mailfile
-    cat $tmpfile.html.tidied >> $tmpfile.mailfile
+    cat $tmpfile.html.tidy.premail >> $tmpfile.mailfile
     for addr in $addrs; do
         cat $tmpfile.mailfile | /usr/sbin/sendmail $addr
     done
+
+    # Clean up after ourselves.
     rm $tmpfile.mailfile
     rm $tmpfile.html
-    rm $tmpfile.html.tidied
+    rm $tmpfile.html.tidy
+    rm $tmpfile.html.tidy.premail
 fi
 rm $tmpfile
