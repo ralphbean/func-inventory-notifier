@@ -125,7 +125,7 @@ echo -n '
 </style>
 </head>
 
-<body class="f9 b9">
+<body class="f9 b9" style="font-size: large;">
 <pre>
 '
 
