@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # List of addresses who should get mail
-addrs=ralph.bean@gmail.com
+addrs=ralph.bean@gmail.com pfmeec@rit.edu
 now=`date +'%m-%d-%y %H:%M:%S'`
 
 # Just a util for getting a random tmpfile
