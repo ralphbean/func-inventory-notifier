@@ -5,14 +5,23 @@ import pprint
 import os
 import ConfigParser as configparser
 from socket import gethostname
+import func.overlord.inventory as func_inventory
 
 class FuncInventoryNotifier(object):
     def __init__(self):
         self.config = FuncInventoryNotifierConfig()
+
     def __str__(self):
         return "FuncInventoryNotifier:\n" + pprint.pformat(self.config)
+
     def run(self):
+        # Make a TemporaryFile for storage.  It deletes itself at the end!
         tmp = tempfile.TemporaryFile()
+        
+        # Run the inventory
+        inventory = func_inventory.FuncInventory()
+        modules = ','.join(self.config['modules'])
+        inventory.run(['func-inventory', '--modules=%s' % modules])
 
 class FuncInventoryNotifierConfig(dict):
     def __init__(self, cfg_filename='func-inventory-notifier.conf'):
@@ -42,7 +51,11 @@ class FuncInventoryNotifierConfig(dict):
         # Extract a dict
         section = 'func-inventory-notifier'
         opts = dict(config.items(section))
-      
+
+        # Split up space-separated options
+        opts['modules'] = opts['modules'].split()
+        opts['to_emails'] = opts['to_emails'].split()
+
         # Check for unexpected keys and store
         for k, v in opts.iteritems():
             if k not in defaults:
