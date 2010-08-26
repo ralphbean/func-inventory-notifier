@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
-import tempfile
 import pprint
 import os
 import ConfigParser as configparser
 from socket import gethostname
 import func.overlord.inventory as func_inventory
+import func
 
 class FuncInventoryNotifier(object):
     def __init__(self):
@@ -14,14 +14,49 @@ class FuncInventoryNotifier(object):
     def __str__(self):
         return "FuncInventoryNotifier:\n" + pprint.pformat(self.config)
 
+    def log(self, msg):
+        print msg
+
+    def git_diff(self):
+        # TODO - implement
+        return None
+
+    def ansi2html(self, ansi):
+        # TODO - implement
+        return None
+
+    def tidy(html):
+        # TODO - implement
+        return html
+
+    def premail(html):
+        # TODO - implement
+        return html
+
+    def mail(html):
+        # TODO - implement
+        pass
+
     def run(self):
-        # Make a TemporaryFile for storage.  It deletes itself at the end!
-        tmp = tempfile.TemporaryFile()
-        
         # Run the inventory
         inventory = func_inventory.FuncInventory()
         modules = ','.join(self.config['modules'])
-        inventory.run(['func-inventory', '--modules=%s' % modules])
+        try:
+            inventory.run(['func-inventory', '--modules=%s' % modules])
+        except func.CommonErrors.Func_Client_Exception, e:
+            # Since I'm developing.. I'll just pass here.
+            self.log("developing... skipping func errors.")
+
+        diff = self.git_diff()
+        if not diff:
+            self.log('No changes detected.  Sleeping.')
+        else:
+            self.log('CHANGE DETECTED in func-inventory.')
+            diff = self.ansi2html(diff)
+            diff = self.tidy(diff)
+            diff = self.premail(diff)
+            self.mail(diff)
+            self.log('Done mailing changes.')
 
 class FuncInventoryNotifierConfig(dict):
     def __init__(self, cfg_filename='func-inventory-notifier.conf'):
