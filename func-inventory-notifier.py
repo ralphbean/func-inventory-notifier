@@ -45,7 +45,7 @@ class FuncInventoryNotifier(object):
             inventory.run(['func-inventory', '--modules=%s' % modules])
         except func.CommonErrors.Func_Client_Exception, e:
             # Since I'm developing.. I'll just pass here.
-            self.log("developing... skipping func errors.")
+            self.log("** developing... skipping func errors.")
 
         diff = self.git_diff()
         if not diff:
