@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+
+import tempfile
 import pprint
 import os
 import ConfigParser as configparser
@@ -10,9 +12,7 @@ class FuncInventoryNotifier(object):
     def __str__(self):
         return "FuncInventoryNotifier:\n" + pprint.pformat(self.config)
     def run(self):
-        tmp = tempfile.mkstemp()
-
-        pass
+        tmp = tempfile.TemporaryFile()
 
 class FuncInventoryNotifierConfig(dict):
     def __init__(self, cfg_filename='func-inventory-notifier.conf'):
