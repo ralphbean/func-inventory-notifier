@@ -10,6 +10,8 @@ class FuncInventoryNotifier(object):
     def __str__(self):
         return "FuncInventoryNotifier:\n" + pprint.pformat(self.config)
     def run(self):
+        tmp = tempfile.mkstemp()
+
         pass
 
 class FuncInventoryNotifierConfig(dict):
@@ -49,5 +51,5 @@ class FuncInventoryNotifierConfig(dict):
 
 if __name__ == '__main__':
     notif = FuncInventoryNotifier()
-    print notif
+    notif.run()
 
