@@ -13,5 +13,6 @@ func filetracker on all of /etc on lukacs.
     have to ignore *git*
     and "*/\.*" # everythign beginning with a dot.
     and have to look out for including /etc/func/modules/filetracker (lol, recursion)
+    look at to-be-monitored list and get stuff working locally
 
 
