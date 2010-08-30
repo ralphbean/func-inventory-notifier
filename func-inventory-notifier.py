@@ -55,18 +55,12 @@ class FuncInventoryNotifier(object):
     def run(self):
         # Run the inventory
         inventory = func_inventory.FuncInventory()
-        try:
-            inventory.run(
-                [
-                    'func-inventory',
-                    '--tree=%s' % self.config['git_repo'],
-                    '--modules=%s' % ','.join(self.config['modules'])
-                ]
-            )
-        except func.CommonErrors.Func_Client_Exception, e:
-            # Since I'm developing.. I'll just pass here.
-            self.log(str(e))
-            self.log("** developing... skipping func errors.")
+        inventory.run(
+            [
+                'func-inventory',
+                '--tree=%s' % self.config['git_repo'],
+                '--modules=%s' % ','.join(self.config['modules'])
+            ])
 
         diff = self.git_diff()
         if not diff:
