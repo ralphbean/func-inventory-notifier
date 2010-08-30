@@ -6,6 +6,7 @@ import ConfigParser as configparser
 from socket import gethostname
 import func.overlord.inventory as func_inventory
 import func
+from func.minion import sub_process
 
 class FuncInventoryNotifier(object):
     def __init__(self):
@@ -18,8 +19,22 @@ class FuncInventoryNotifier(object):
         print msg
 
     def git_diff(self):
-        # TODO - implement
-        return None
+        cmd = sub_process.Popen(
+            [
+                "/usr/bin/git",
+                "--git-dir=%s" % self.config['git_repo'],
+                "log",
+                "-p",
+                "--since='5 minutes ago'",
+                "--color"
+            ],
+            shell=True, stdout=sub_process.PIPE)
+        output = cmd.communicate()[0]
+        def _check_for_errors(o):
+            # TODO - to some error checking and raise exceptions
+            pass
+        _check_for_errors(output)
+        return output
 
     def ansi2html(self, ansi):
         # TODO - implement
@@ -40,11 +55,17 @@ class FuncInventoryNotifier(object):
     def run(self):
         # Run the inventory
         inventory = func_inventory.FuncInventory()
-        modules = ','.join(self.config['modules'])
         try:
-            inventory.run(['func-inventory', '--modules=%s' % modules])
+            inventory.run(
+                [
+                    'func-inventory',
+                    '--tree=%s' % self.config['git_repo'],
+                    '--modules=%s' % ','.join(self.config['modules'])
+                ]
+            )
         except func.CommonErrors.Func_Client_Exception, e:
             # Since I'm developing.. I'll just pass here.
+            self.log(str(e))
             self.log("** developing... skipping func errors.")
 
         diff = self.git_diff()
