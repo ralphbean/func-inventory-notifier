@@ -74,6 +74,7 @@ class FuncInventoryNotifierConfig(dict):
             'modules' : 'filetracker hardware service system rpms',
             'from_name' : 'Func Inventory Notifier',
             'from_email' : 'func-inventory-notifier@%s' % hostname,
+            'git_repo' : '/var/lib/func/inventory',
             'hostname' : hostname
         }
 
