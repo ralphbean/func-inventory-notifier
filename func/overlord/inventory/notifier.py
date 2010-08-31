@@ -115,7 +115,3 @@ class FuncInventoryNotifierConfig(dict):
                 raise ValueError, "Key %s not expected in config file." % k
             self[k] = v
 
-if __name__ == '__main__':
-    notif = FuncInventoryNotifier()
-    notif.run()
-

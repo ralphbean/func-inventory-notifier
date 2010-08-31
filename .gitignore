@@ -1,2 +1,5 @@
 premailer
 *.swp
+*.pyc
+build
+dist
