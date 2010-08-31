@@ -21,5 +21,7 @@ setup(
         "python-premailer",
     ],
     packages=find_packages(),
-    namespace_packages = ['func']
+    namespace_packages = ['func'],
+    scripts=['scripts/func-inventory-notifier'],
+    data_files = [("/etc/func", ["etc/func-inventory-notifier.conf"])]
 )

@@ -81,7 +81,7 @@ class FuncInventoryNotifierConfig(dict):
         hostname = gethostname()
     
         # Look in /etc, ~/, and the path working directory
-        locations = ['/etc/func/%s', os.path.expanduser('~/.%s'), '%s']
+        locations = ['/etc/func/%s']#, os.path.expanduser('~/.%s'), '%s']
         locations = [loc % cfg_filename for loc in locations]
     
         defaults = {
@@ -95,9 +95,7 @@ class FuncInventoryNotifierConfig(dict):
 
         # Open and read the config
         config = configparser.SafeConfigParser(defaults)
-        config.read(['/etc/func/%s.conf' % cfg_filename,
-                     os.path.expanduser('~/.%s' % cfg_filename ),
-                     cfg_filename])
+        config.read(locations)
 
         # Extract a dict
         section = 'func-inventory-notifier'
