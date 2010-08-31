@@ -39,16 +39,16 @@ class FuncInventoryNotifier(object):
     def ansi2html(self, ansi):
         return ansi2html.Ansi2HTMLConverter().convert(ansi)
 
-    def tidy(html):
+    def tidy(self, html):
         html, errors = tidy_document(html)
         print type(html)
         return html
 
-    def premail(html):
+    def premail(self, html):
         # TODO - implement
         return html
 
-    def mail(html):
+    def mail(self, html):
         # TODO - implement
         pass
 
