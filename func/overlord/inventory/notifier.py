@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import ansi2html
 from tidylib import tidy_document
 import pprint
