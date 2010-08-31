@@ -16,7 +16,7 @@ setup(
     url='http://github.com/ralphbean/func.overlord.inventory.notifier',
     install_requires=[
         "ansi2html",
-        "func",
+        #"func",
         "pytidylib",
         "python-premailer",
     ],
