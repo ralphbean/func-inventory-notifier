@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+import ansi2html
+from tidylib import tidy_document
 import pprint
 import os
 import ConfigParser as configparser
@@ -37,11 +39,11 @@ class FuncInventoryNotifier(object):
         return output
 
     def ansi2html(self, ansi):
-        # TODO - implement
-        return None
+        return ansi2html.Ansi2HTMLConverter().convert(ansi)
 
     def tidy(html):
-        # TODO - implement
+        html, errors = tidy_document(html)
+        print type(html)
         return html
 
     def premail(html):
