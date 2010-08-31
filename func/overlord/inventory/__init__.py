@@ -1,3 +1,1 @@
-from notifier import FuncInventoryNotifier, FuncInventoryNotifierConfig
-
-__all__ = ['FuncInventoryNotifier', 'FuncInventoryNotifierConfig']
+__import__('pkg_resources').declare_namespace(__name__)
