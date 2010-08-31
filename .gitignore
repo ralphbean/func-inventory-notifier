@@ -3,3 +3,4 @@ premailer
 *.pyc
 build
 dist
+*.egg-info
