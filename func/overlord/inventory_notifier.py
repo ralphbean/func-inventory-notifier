@@ -1,3 +1,17 @@
+##
+## func inventory notifier app.
+## send notifications of changes found with func inventory
+##
+## Ralph Bean <ralph.bean@gmail.com>
+## +AUTHORS
+##
+## This software may be freely redistributed under the terms of the GNU
+## general public license.
+##
+## You should have received a copy of the GNU General Public License
+## along with this program; if not, write to the Free Software
+## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+##
 
 try:
     import configparser
@@ -20,16 +34,25 @@ from func.minion import sub_process
 from func.minion.sub_process import PIPE
 
 class FuncInventoryNotifier(object):
-    def __init__(self):
-        self.config = FuncInventoryNotifierConfig()
+    """ Notification App - '.run()' is the primary entry point. """
+    def __init__(self, config=None):
+        """ Startup.  Takes an instance of FuncInventoryNotifierConfig """
+        if not config:
+            config = FuncInventoryNotifierConfig()
+        self.config = config
 
     def __str__(self):
         return "FuncInventoryNotifier:\n" + pprint.pformat(self.config)
 
     def log(self, msg):
+        """ Placeholder - just prints to stdout """
         print msg
 
     def git_diff(self):
+        """ Run git log -p on the git_repo specified in the configuration.
+
+        :return a str, the content of which is the output of ``git log -p``
+        """
         cwd = os.getcwd()
         os.chdir(self.config['git_repo'])
 
@@ -45,6 +68,11 @@ class FuncInventoryNotifier(object):
         return output
 
     def mail(self, html):
+        """ Send mail as configured
+
+        :param html is a str containing well-formed html
+        """
+
         server = smtplib.SMTP(self.config['smtp_server'])
         
         msg = MIMEText(html, 'html')
@@ -66,6 +94,10 @@ class FuncInventoryNotifier(object):
         server.quit()
 
     def run(self):
+        """ Main entry point
+        
+        Run FuncInventory and if there is a change, prepare and send an email.
+        """
         # Run the inventory
         inventory = func_inventory.FuncInventory()
         inventory.run(
@@ -94,6 +126,8 @@ class FuncInventoryNotifier(object):
             self.log('Done mailing changes.')
 
 class FuncInventoryNotifierConfig(dict):
+    """ Loads configuration from file on instantiation. """
+
     def __init__(self, cfg_filename='func-inventory-notifier.conf'):
         super(FuncInventoryNotifierConfig, self).__init__()
         
