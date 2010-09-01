@@ -15,7 +15,7 @@ setup(
     long_description=open('README.md').read(),
     author='Ralph Bean',
     author_email='ralph.bean@gmail.com',
-    url='http://github.com/ralphbean/func.overlord.inventory_notifier',
+    url='http://github.com/ralphbean/func-inventory-notifier',
     install_requires=[
         "ansi2html",
         #"func",
