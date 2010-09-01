@@ -43,6 +43,8 @@ class FuncInventoryNotifier(object):
         # TODO - see the following link for info about options to pass
         # Need to figure out how to specify that this is HTML
         # http://docs.python.org/library/smtplib#smtplib.SMTP.sendmail
+        # This link may be of help -- passing headers directly:
+        #  http://docs.python.org/release/2.5.2/lib/SMTP-example.html
         server.sendmail(
             "'%s' <%s>" % (self.config['from_name'], self.config['from_email']),
             self.config['to_emails'],
