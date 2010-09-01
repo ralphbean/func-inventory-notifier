@@ -10,7 +10,7 @@ conffile = "func-inventory-notifier.conf"
 
 setup(
     name='func-inventory-notifier',
-    version='0.2.1',
+    version='0.2.2',
     description='Send colorized HTML notifications of func-inventory',
     long_description=open('README.md').read(),
     author='Ralph Bean',
