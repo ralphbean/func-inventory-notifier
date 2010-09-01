@@ -1,11 +1,13 @@
 import ansi2html
-import smtplib
 import pypremailer
+import smtplib
+from email.MIMEText import MIMEText
 from tidylib import tidy_document
+from datetime import datetime
 import pprint
 import os
 import ConfigParser as configparser
-from socket import gethostname
+from socket import gethostname, getfqdn
 import func.overlord.inventory as func_inventory
 import func
 from func.minion import sub_process
@@ -37,21 +39,25 @@ class FuncInventoryNotifier(object):
         return output
 
     def mail(self, html):
-        server = smtplib.SMTP('localhost')
-        server.set_debuglevel(3)
-        self.config['to_emails'] = ['ralph.bean@gmail.com']
-        # TODO - see the following link for info about options to pass
-        # Need to figure out how to specify that this is HTML
-        # http://docs.python.org/library/smtplib#smtplib.SMTP.sendmail
-        # This link may be of help -- passing headers directly:
-        #  http://docs.python.org/release/2.5.2/lib/SMTP-example.html
-        server.sendmail(
-            "'%s' <%s>" % (self.config['from_name'], self.config['from_email']),
-            self.config['to_emails'],
-            html
-        )
+        server = smtplib.SMTP(self.config['smtp_server'])
+        
+        msg = MIMEText(html, 'html')
+
+        _s = 'Func Inventory Notifier %s' % datetime.today().isoformat(' ')
+        msg['Subject'] =  _s
+        _f = "'%s' <%s>" % (self.config['from_name'], self.config['from_email'])
+        msg['From'] = _f
+
+        msg['X-Generated-By'] = 'Python'
+        msg['Content-Disposition'] = 'inline'
+
+        for to_email in self.config['to_emails']:
+            self.log( "Emailing %s" % to_email )
+            msg['To'] = to_email
+            _msg = msg.as_string()
+            server.sendmail( _f, to_email, _msg )
+
         server.quit()
-        pass
 
     def run(self):
         # Run the inventory
@@ -68,10 +74,13 @@ class FuncInventoryNotifier(object):
             self.log('No changes detected.  Sleeping.')
         else:
             self.log('CHANGE DETECTED in func-inventory.')
+
             html = ansi2html.Ansi2HTMLConverter().convert(diff)
             html, errors = tidy_document(html)
             html = pypremailer.Premailer(html).premail()
-            self.mail(diff)
+
+            self.mail(html)
+
             self.log('Done mailing changes.')
 
 class FuncInventoryNotifierConfig(dict):
@@ -79,7 +88,7 @@ class FuncInventoryNotifierConfig(dict):
         super(FuncInventoryNotifierConfig, self).__init__()
         
         # The hostname on which this code is executing (overlord)
-        hostname = gethostname()
+        hostname = getfqdn()
     
         # Look in /etc, ~/, and the path working directory
         locations = ['/etc/func/%s']#, os.path.expanduser('~/.%s'), '%s']
@@ -89,8 +98,9 @@ class FuncInventoryNotifierConfig(dict):
             'to_emails' : 'root@%s' % hostname,
             'modules' : 'filetracker hardware service system rpms',
             'from_name' : 'Func Inventory Notifier',
-            'from_email' : 'func-inventory-notifier@%s' % hostname,
+            'from_email' : 'root@%s' % hostname,
             'git_repo' : '/var/lib/func/inventory',
+            'smtp_server' : 'localhost',
             'hostname' : hostname
         }
 
