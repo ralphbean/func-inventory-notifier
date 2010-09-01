@@ -1,15 +1,21 @@
+
+try:
+    import configparser
+except ImportError, e:
+    import ConfigParser as configparser
+
+import os
+import pprint
+from datetime import datetime
+from socket import gethostname, getfqdn
+
 import ansi2html
+import tidylib
 import pypremailer
 import smtplib
 from email.MIMEText import MIMEText
-from tidylib import tidy_document
-from datetime import datetime
-import pprint
-import os
-import ConfigParser as configparser
-from socket import gethostname, getfqdn
-import func.overlord.inventory as func_inventory
-import func
+
+from func.overlord import inventory as func_inventory
 from func.minion import sub_process
 from func.minion.sub_process import PIPE
 
@@ -79,7 +85,7 @@ class FuncInventoryNotifier(object):
                       font_size=self.config['font_size'])
             html = ansi2html.Ansi2HTMLConverter(**kw).convert(diff)
 
-            html, errors = tidy_document(html)
+            html, errors = tidylib.tidy_document(html)
 
             html = pypremailer.Premailer(html).premail()
 
