@@ -23,7 +23,7 @@ setup(
         "python-premailer",
     ],
     packages=find_packages(),
-    namespace_packages = ['func'],
+    namespace_packages = ['func.overlord.inventory'],
     scripts=['scripts/func-inventory-notifier'],
     data_files = [(etcpath, ["etc/%s" % conffile])],
     include_package_data = True
