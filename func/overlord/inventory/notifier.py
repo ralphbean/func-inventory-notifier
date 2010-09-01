@@ -75,7 +75,8 @@ class FuncInventoryNotifier(object):
         else:
             self.log('CHANGE DETECTED in func-inventory.')
 
-            html = ansi2html.Ansi2HTMLConverter().convert(diff)
+            html = ansi2html.Ansi2HTMLConverter(
+                self.config['dark_bg'], self.config['font_size']).convert(diff)
             html, errors = tidy_document(html)
             html = pypremailer.Premailer(html).premail()
 
@@ -101,6 +102,8 @@ class FuncInventoryNotifierConfig(dict):
             'from_email' : 'root@%s' % hostname,
             'git_repo' : '/var/lib/func/inventory',
             'smtp_server' : 'localhost',
+            'dark_bg' : True,
+            'font_size' : 'normal',
             'hostname' : hostname
         }
 
