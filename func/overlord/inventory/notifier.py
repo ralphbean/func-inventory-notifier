@@ -40,6 +40,9 @@ class FuncInventoryNotifier(object):
         server = smtplib.SMTP('localhost')
         server.set_debuglevel(3)
         self.config['to_emails'] = ['ralph.bean@gmail.com']
+        # TODO - see the following link for info about options to pass
+        # Need to figure out how to specify that this is HTML
+        # http://docs.python.org/library/smtplib#smtplib.SMTP.sendmail
         server.sendmail(
             "'%s' <%s>" % (self.config['from_name'], self.config['from_email']),
             self.config['to_emails'],
