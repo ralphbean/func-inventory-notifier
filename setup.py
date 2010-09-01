@@ -9,7 +9,7 @@ etcpath = "/etc/func"
 conffile = "func-inventory-notifier.conf"
 
 setup(
-    name='func.overlord.inventory_notifier',
+    name='func-inventory-notifier',
     version='0.2.1',
     description='Send colorized HTML notifications of func-inventory',
     long_description=open('README.md').read(),
