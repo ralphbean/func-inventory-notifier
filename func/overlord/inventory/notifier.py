@@ -1,4 +1,5 @@
 import ansi2html
+import pypremailer
 from tidylib import tidy_document
 import pprint
 import os
@@ -7,6 +8,7 @@ from socket import gethostname
 import func.overlord.inventory as func_inventory
 import func
 from func.minion import sub_process
+from func.minion.sub_process import PIPE
 
 class FuncInventoryNotifier(object):
     def __init__(self):
@@ -19,36 +21,23 @@ class FuncInventoryNotifier(object):
         print msg
 
     def git_diff(self):
-        cmd = sub_process.Popen(
-            [
-                "/usr/bin/git",
-                "--git-dir=%s" % self.config['git_repo'],
-                "log",
-                "-p",
-                "--since='5 minutes ago'",
-                "--color"
-            ],
-            shell=True, stdout=sub_process.PIPE)
-        output = cmd.communicate()[0]
-        def _check_for_errors(o):
-            # TODO - to some error checking and raise exceptions
-            pass
-        _check_for_errors(output)
+        cwd = os.getcwd()
+        os.chdir(self.config['git_repo'])
+
+        cmd = "/usr/bin/git log -p --since='5 minutes ago' --color"
+        proc = sub_process.Popen([cmd], shell=True, stdout=PIPE, stderr=PIPE)
+        output, error = proc.communicate()
+
+        os.chdir(cwd)
+
+        if proc.returncode is not 0:
+            raise Exception, "Error in git diff: '%s' %s" % ( error, output )
+
         return output
 
-    def ansi2html(self, ansi):
-        return ansi2html.Ansi2HTMLConverter().convert(ansi)
-
-    def tidy(self, html):
-        html, errors = tidy_document(html)
-        print type(html)
-        return html
-
-    def premail(self, html):
-        # TODO - implement
-        return html
-
     def mail(self, html):
+        self.log('mailing')
+        self.log(html)
         # TODO - implement
         pass
 
@@ -67,9 +56,9 @@ class FuncInventoryNotifier(object):
             self.log('No changes detected.  Sleeping.')
         else:
             self.log('CHANGE DETECTED in func-inventory.')
-            diff = self.ansi2html(diff)
-            diff = self.tidy(diff)
-            diff = self.premail(diff)
+            html = ansi2html.Ansi2HTMLConverter().convert(diff)
+            html, errors = tidy_document(html)
+            html = pypremailer.Premailer(html).premail()
             self.mail(diff)
             self.log('Done mailing changes.')
 
