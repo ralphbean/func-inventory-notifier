@@ -10,7 +10,7 @@ conffile = "func-inventory-notifier.conf"
 
 setup(
     name='func.overlord.inventory.notifier',
-    version='0.1',
+    version='0.1.01',
     description='Send colorized HTML notifications of func-inventory',
     long_description=open('README.md').read(),
     author='Ralph Bean',
@@ -25,5 +25,6 @@ setup(
     packages=find_packages(),
     namespace_packages = ['func'],
     scripts=['scripts/func-inventory-notifier'],
-    data_files = [(etcpath, ["etc/%s" % conffile])]
+    data_files = [(etcpath, ["etc/%s" % conffile])],
+    include_package_data = True
 )
