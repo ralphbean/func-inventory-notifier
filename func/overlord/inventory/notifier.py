@@ -75,9 +75,12 @@ class FuncInventoryNotifier(object):
         else:
             self.log('CHANGE DETECTED in func-inventory.')
 
-            html = ansi2html.Ansi2HTMLConverter(
-                self.config['dark_bg'], self.config['font_size']).convert(diff)
+            kw = dict(dark_bg=self.config['dark_bg'],
+                      font_size=self.config['font_size'])
+            html = ansi2html.Ansi2HTMLConverter(**kw).convert(diff)
+
             html, errors = tidy_document(html)
+
             html = pypremailer.Premailer(html).premail()
 
             self.mail(html)
@@ -102,7 +105,7 @@ class FuncInventoryNotifierConfig(dict):
             'from_email' : 'root@%s' % hostname,
             'git_repo' : '/var/lib/func/inventory',
             'smtp_server' : 'localhost',
-            'dark_bg' : True,
+            'dark_bg' : "Yes",
             'font_size' : 'normal',
             'hostname' : hostname
         }
@@ -118,6 +121,9 @@ class FuncInventoryNotifierConfig(dict):
         # Split up space-separated options
         opts['modules'] = opts['modules'].split()
         opts['to_emails'] = opts['to_emails'].split()
+
+        # Mangle "yes" to True
+        opts['dark_bg'] = opts['dark_bg'].lower() == "yes"
 
         # Check for unexpected keys and store
         for k, v in opts.iteritems():
