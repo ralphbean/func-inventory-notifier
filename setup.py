@@ -5,8 +5,21 @@ except ImportError:
     use_setuptools()
     from setuptools import setup, find_packages
 
+from setuptools.command.install import install as _install
+
+etcpath = "/etc/func"
+conffile = "func-inventory-notifier.conf"
+
+class install(_install):
+    def run(self):
+        _install.run(self)
+        # Just add a nice, helpful post-install message
+        msg = "Modify %s/%s to customize" % ( etcpath, conffile )
+        print "*" * len(msg)
+        print msg
 
 setup(
+    cmdclass={'install': install},
     name='func.overlord.inventory.notifier',
     version='0.1',
     description='Send colorized HTML notifications of func-inventory',
@@ -23,5 +36,5 @@ setup(
     packages=find_packages(),
     namespace_packages = ['func'],
     scripts=['scripts/func-inventory-notifier'],
-    data_files = [("/etc/func", ["etc/func-inventory-notifier.conf"])]
+    data_files = [(etcpath, ["etc/%s" % conffile])]
 )
