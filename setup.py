@@ -10,7 +10,7 @@ conffile = "func-inventory-notifier.conf"
 
 setup(
     name='func.overlord.inventory.notifier',
-    version='0.1.01',
+    version='0.1.02',
     description='Send colorized HTML notifications of func-inventory',
     long_description=open('README.md').read(),
     author='Ralph Bean',
