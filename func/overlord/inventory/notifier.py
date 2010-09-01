@@ -1,4 +1,5 @@
 import ansi2html
+import smtplib
 import pypremailer
 from tidylib import tidy_document
 import pprint
@@ -36,9 +37,15 @@ class FuncInventoryNotifier(object):
         return output
 
     def mail(self, html):
-        self.log('mailing')
-        self.log(html)
-        # TODO - implement
+        server = smtplib.SMTP('localhost')
+        server.set_debuglevel(3)
+        self.config['to_emails'] = ['ralph.bean@gmail.com']
+        server.sendmail(
+            "'%s' <%s>" % (self.config['from_name'], self.config['from_email']),
+            self.config['to_emails'],
+            html
+        )
+        server.quit()
         pass
 
     def run(self):
