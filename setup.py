@@ -8,11 +8,19 @@ except ImportError:
 etcpath = "/etc/func"
 conffile = "func-inventory-notifier.conf"
 
+f = open('README.rst')
+long_description = f.read().strip()
+long_description = long_description.split('split here', 1)[1]
+print "*"*20
+print long_description
+print "*"*20
+f.close()
+
 setup(
     name='func-inventory-notifier',
-    version='0.2.2',
+    version='0.2.3a9',
     description='Send colorized HTML notifications of func-inventory',
-    long_description=open('README.md').read(),
+    long_description=long_description,
     author='Ralph Bean',
     author_email='ralph.bean@gmail.com',
     url='http://github.com/ralphbean/func-inventory-notifier',

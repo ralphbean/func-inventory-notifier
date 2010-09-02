@@ -1,6 +1,3 @@
-
-.. title:: func-inventory-notifier
-=======================
 func-inventory-notifier
 =======================
 
@@ -18,8 +15,14 @@ send colorized HTML emails of func-inventory changes
     An example of a notification sent by func-inventory-notifier showing
     that the *httpd* service was started on the host *lukacs*.
 
-Get up and running with func-inventory-notifier
-===============================================
+.. comment: split here
+
+`Screenshots <http://github.com/ralphbean/func-inventory-notifier/raw/master/doc/images/screenshot1.png>`_
+
+`Bugs <http://github.com/ralphbean/func-inventory-notifier/issues/>`_
+
+Installation Notes
+------------------
 
 .. _func: https://fedorahosted.org/func/
 .. _func-inventory: https://fedorahosted.org/func/wiki/FuncInventory    
@@ -44,7 +47,8 @@ Configure func-inventory notifier by editing
 
 Take it for a spin by running ``/usr/bin/func-inventory-notifier``
 
-----
+Further Usage Notes
+-------------------
 
 It is particularly useful when scheduled to run regularly with cron.
 For instance, with a default installation of both *func* and
