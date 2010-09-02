@@ -4,3 +4,4 @@ premailer
 build
 dist
 *.egg-info
+README.pdf
