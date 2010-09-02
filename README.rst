@@ -15,7 +15,8 @@ send colorized HTML emails of func-inventory changes
     :alt: a sample email received from func-inventory-notifier
     :target: http://github.com/ralphbean/func-inventory-notifier
 
-    An example of a notification send by func-inventory-notifier.
+    An example of a notification sent by func-inventory-notifier showing
+    that the *httpd* service was started on the host *lukacs*.
 
 Get up and running with func-inventory-notifier
 ===============================================
@@ -34,7 +35,9 @@ Install func-inventory-notifier with:
 
   ``pip install func-inventory-notifier``
 
-..  ``yum install func-inventory-notifier``
+(or)
+
+  ``yum install func-inventory-notifier``
 
 Configure func-inventory notifier by editing 
 ``/etc/func/func-inventory-notifier.conf``
