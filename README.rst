@@ -7,6 +7,10 @@ func-inventory-notifier : send colorized HTML emails of func-inventory changes
 
 .. image:: doc/images/screenshot1.png
 
+(or)
+
+.. image:: func-inventory-notifier/raw/master/doc/images/screenshot1.png
+
 Get up and running with func-inventory-notifier
 ===============================================
 
