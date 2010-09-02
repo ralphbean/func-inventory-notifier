@@ -1,15 +1,21 @@
-==============================================================================
-func-inventory-notifier : send colorized HTML emails of func-inventory changes
-==============================================================================
+
+.. title:: func-inventory-notifier
+=======================
+func-inventory-notifier
+=======================
+
+send colorized HTML emails of func-inventory changes
+----------------------------------------------------
+
 :Author: Ralph Bean <ralph.bean@gmail.com>
 
 ----
 
-.. image:: doc/images/screenshot1.png
+.. figure:: func-inventory-notifier/raw/master/doc/images/screenshot1.png
+    :alt: a sample email received from func-inventory-notifier
+    :target: http://github.com/ralphbean/func-inventory-notifier
 
-(or)
-
-.. image:: func-inventory-notifier/raw/master/doc/images/screenshot1.png
+    An example of a notification send by func-inventory-notifier.
 
 Get up and running with func-inventory-notifier
 ===============================================
