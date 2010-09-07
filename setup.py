@@ -11,9 +11,6 @@ conffile = "func-inventory-notifier.conf"
 f = open('README.rst')
 long_description = f.read().strip()
 long_description = long_description.split('split here', 1)[1]
-print "*"*20
-print long_description
-print "*"*20
 f.close()
 
 setup(
