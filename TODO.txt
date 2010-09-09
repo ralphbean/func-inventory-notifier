@@ -1,0 +1,5 @@
+add argparse/optparse functionality to func-inventory-notifier
+
+resolve python2.4 cssutils dependency break
+
+package as rpm
