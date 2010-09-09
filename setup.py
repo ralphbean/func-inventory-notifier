@@ -15,7 +15,7 @@ f.close()
 
 setup(
     name='func-inventory-notifier',
-    version='0.2.3a10',
+    version='0.2.3a11',
     description='Send colorized HTML notifications of func-inventory',
     long_description=long_description,
     author='Ralph Bean',
