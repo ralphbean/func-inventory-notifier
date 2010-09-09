@@ -54,11 +54,11 @@ It is particularly useful when scheduled to run regularly with cron.
 For instance, with a default installation of both *func* and
 *func-inventory-notifier*, a crontab entry like
 
-   ``0 * * * * /usr/bin/func-inventory-notifier &> /dev/null``
+   ``0 * * * * /usr/bin/func-inventory-notifier 2>&1  | /bin/logger -t func``
 
 will wake up on the hour, monitor *func-inventory*'s git repository, and
 if a change has happened, prepare and fire off an email to the root
-user.
+user.  Any errors will be tossed to the system log for you to see (and report!)
 
 .. _filetracker module: https://fedorahosted.org/func/wiki/FileTrackerModule
 
