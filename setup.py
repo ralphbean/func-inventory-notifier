@@ -15,15 +15,15 @@ f.close()
 
 setup(
     name='func-inventory-notifier',
-    version='0.2.3a9',
+    version='0.2.3a10',
     description='Send colorized HTML notifications of func-inventory',
     long_description=long_description,
     author='Ralph Bean',
     author_email='ralph.bean@gmail.com',
     url='http://github.com/ralphbean/func-inventory-notifier',
     install_requires=[
-        "ansi2html",
         #"func",
+        "ansi2html",
         "pytidylib",
         "python-premailer",
     ],
