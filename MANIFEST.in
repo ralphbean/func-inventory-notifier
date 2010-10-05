@@ -1,2 +1,3 @@
 include README.rst
 include etc/func-inventory-notifier.conf
+include pylint.output

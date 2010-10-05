@@ -1,0 +1,2 @@
+************* Module func-inventory-notifier
+F:  1: <class 'logilab.astng._exceptions.ASTNGBuildingException'>: Unable to load module func-inventory-notifier (No module named func-inventory-notifier)
